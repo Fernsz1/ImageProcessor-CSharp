@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Windows.Forms;
 using WebCamLib;
+using ImageProcessingFilters;
 
 namespace FernandezDigitalImagerProcessingProgram
 {
@@ -112,17 +113,15 @@ namespace FernandezDigitalImagerProcessingProgram
                                 currentWebcam = webcamDevices[0];
                                 currentWebcam.ShowWindow(pictureBox2);
                                 Application.DoEvents();
-                                System.Threading.Thread.Sleep(200);
                             }
                             currentWebcam.Sendmessage();
                             if (Clipboard.ContainsImage())
                             {
-                                pictureBox2.Image = (Bitmap)Clipboard.GetImage();
+                                pictureBox2.Image = (Bitmap)Clipboard.GetImage(); 
                             }
                             break;
                         case ImageSourceDialog.SourceChoice.Cancel:
                         default:
-                            // Do nothing
                             break;
                     }
                 }
@@ -169,10 +168,7 @@ namespace FernandezDigitalImagerProcessingProgram
             return histImage;
         }
 
-        private void label2_Click(object sender, EventArgs e)
-        {
-
-        }
+      
 
         private void button3_Click(object sender, EventArgs e)
         {
@@ -218,11 +214,6 @@ namespace FernandezDigitalImagerProcessingProgram
             {
                 currentWebcam.Stop();
             }
-        }
-
-        private void button4_Click(object sender, EventArgs e)
-        {
-
         }
 
         private void copyBtn_Click(object sender, EventArgs e)
@@ -277,7 +268,6 @@ namespace FernandezDigitalImagerProcessingProgram
                 case "sepia":
                     result = SepiaUnsafe(src);
                     break;
-                // Histogram and Subtract can be similarly converted if needed
                 case "histogram":
                     if (pictureBox3.Image != null)
                     {
@@ -295,6 +285,91 @@ namespace FernandezDigitalImagerProcessingProgram
                     }
                     result = SubtractUnsafe(new Bitmap(pictureBox1.Image), new Bitmap(pictureBox2.Image));
                     break;
+                case "smoothing":
+                    result = new Bitmap(src);
+                    ConvMatrix mSmooth = new ConvMatrix();
+                    mSmooth.SetAll(1);
+                    mSmooth.Pixel = 1;
+                    mSmooth.Factor = 9;
+                    BitmapFilter.Conv3x3(result, mSmooth);
+                    break;
+                case "gaussian blur":
+                    result = new Bitmap(src);
+                    ConvMatrix mGauss = new ConvMatrix();
+                    mGauss.TopLeft = mGauss.TopRight = mGauss.BottomLeft = mGauss.BottomRight = 1;
+                    mGauss.TopMid = mGauss.MidLeft = mGauss.MidRight = mGauss.BottomMid = 2;
+                    mGauss.Pixel = 4;
+                    mGauss.Factor = 16;
+                    BitmapFilter.Conv3x3(result, mGauss);
+                    break;
+                case "sharpen":
+                    result = new Bitmap(src);
+                    ConvMatrix mSharp = new ConvMatrix();
+                    mSharp.TopLeft = mSharp.TopRight = mSharp.BottomLeft = mSharp.BottomRight = 0;
+                    mSharp.TopMid = mSharp.MidLeft = mSharp.MidRight = mSharp.BottomMid = -2;
+                    mSharp.Pixel = 11;
+                    mSharp.Factor = 3;
+                    BitmapFilter.Conv3x3(result, mSharp);
+                    break;
+                case "mean removal":
+                    result = new Bitmap(src);
+                    ConvMatrix mMean = new ConvMatrix();
+                    mMean.SetAll(-1);
+                    mMean.Pixel = 9;
+                    mMean.Factor = 1;
+                    BitmapFilter.Conv3x3(result, mMean);
+                    break;
+                case "emboss":
+                    result = new Bitmap(src);
+                    ConvMatrix mEmboss = new ConvMatrix();
+
+                    string embossType = subChoiceDrpbox.Visible ? subChoiceDrpbox.SelectedItem?.ToString() : null;
+
+                    switch (embossType)
+                    {
+                        case "Horz/Vertical":
+                            mEmboss.TopMid = mEmboss.MidLeft = mEmboss.MidRight = mEmboss.BottomMid = -1;
+                            mEmboss.Pixel = 4;
+                            mEmboss.Factor = 1;
+                            mEmboss.Offset = 127;
+                            break;
+                        case "All Directions":
+                            mEmboss.SetAll(-1);
+                            mEmboss.Pixel = 8;
+                            mEmboss.Factor = 1;
+                            mEmboss.Offset = 127;
+                            break;
+                        case "Lossy":
+                            mEmboss.TopLeft = mEmboss.TopRight = mEmboss.BottomLeft = mEmboss.BottomRight = 1;
+                            mEmboss.TopMid = mEmboss.MidLeft = mEmboss.MidRight = mEmboss.BottomMid = -2;
+                            mEmboss.Pixel = 4;
+                            mEmboss.Factor = 1;
+                            mEmboss.Offset = 127;
+                            break;
+                        case "Horizontal Only":
+                            mEmboss.MidLeft = -1;
+                            mEmboss.MidRight = -1;
+                            mEmboss.Pixel = 2;
+                            mEmboss.Factor = 1;
+                            mEmboss.Offset = 127;
+                            break;
+                        case "Vertical Only":
+                            mEmboss.TopMid = -1;
+                            mEmboss.BottomMid = 1;
+                            mEmboss.Pixel = 0;
+                            mEmboss.Factor = 1;
+                            mEmboss.Offset = 127;
+                            break;
+                        case "Emboss Laplascian": 
+                            mEmboss.TopLeft = mEmboss.TopRight = mEmboss.BottomLeft = mEmboss.BottomRight = -1;
+                            mEmboss.TopMid = mEmboss.MidLeft = mEmboss.MidRight = mEmboss.BottomMid = 0;
+                            mEmboss.Pixel = 4;
+                            mEmboss.Factor = 1;
+                            mEmboss.Offset = 127;
+                            break;
+                    }
+                    BitmapFilter.Conv3x3(result, mEmboss);
+                    break;
                 default:
                     MessageBox.Show("Conversion not implemented.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     break;
@@ -308,7 +383,24 @@ namespace FernandezDigitalImagerProcessingProgram
 
         private void choiceDrpbox_SelectedIndexChanged(object sender, EventArgs e)
         {
+            string selected = choiceDrpbox.SelectedItem?.ToString();
 
+            if (selected != null && selected.Trim().ToLowerInvariant() == "emboss")
+            {
+                subChoiceDrpbox.Items.Clear();
+                subChoiceDrpbox.Items.Add("Emboss Laplascian");
+                subChoiceDrpbox.Items.Add("Horz/Vertical");
+                subChoiceDrpbox.Items.Add("All Directions");
+                subChoiceDrpbox.Items.Add("Lossy");
+                subChoiceDrpbox.Items.Add("Horizontal Only");
+                subChoiceDrpbox.Items.Add("Vertical Only");
+                subChoiceDrpbox.SelectedIndex = 0; // default selection
+                subChoiceDrpbox.Visible = true;
+            }
+            else
+            {
+                subChoiceDrpbox.Visible = false;
+            }
         }
 
         private unsafe Bitmap BasicCopyUnsafe(Bitmap src)

@@ -39,6 +39,7 @@
             this.choiceDrpbox = new System.Windows.Forms.ComboBox();
             this.saveBtn = new System.Windows.Forms.Button();
             this.copyBtn = new System.Windows.Forms.Button();
+            this.subChoiceDrpbox = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
@@ -46,7 +47,7 @@
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(36, 120);
+            this.pictureBox1.Location = new System.Drawing.Point(38, 165);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(300, 300);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -55,7 +56,7 @@
             // 
             // pictureBox2
             // 
-            this.pictureBox2.Location = new System.Drawing.Point(380, 120);
+            this.pictureBox2.Location = new System.Drawing.Point(382, 165);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(300, 300);
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -64,7 +65,7 @@
             // 
             // pictureBox3
             // 
-            this.pictureBox3.Location = new System.Drawing.Point(726, 120);
+            this.pictureBox3.Location = new System.Drawing.Point(728, 165);
             this.pictureBox3.Name = "pictureBox3";
             this.pictureBox3.Size = new System.Drawing.Size(300, 300);
             this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -75,7 +76,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Baskerville Old Face", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(440, 48);
+            this.label1.Location = new System.Drawing.Point(441, 41);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(183, 32);
             this.label1.TabIndex = 4;
@@ -85,18 +86,17 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Baskerville Old Face", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(776, 48);
+            this.label2.Location = new System.Drawing.Point(778, 41);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(203, 32);
             this.label2.TabIndex = 5;
             this.label2.Text = "Processed Image";
-            this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // label3
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Baskerville Old Face", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(72, 48);
+            this.label3.Location = new System.Drawing.Point(73, 41);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(227, 32);
             this.label3.TabIndex = 6;
@@ -104,7 +104,7 @@
             // 
             // chooseImageBtn
             // 
-            this.chooseImageBtn.Location = new System.Drawing.Point(462, 443);
+            this.chooseImageBtn.Location = new System.Drawing.Point(464, 488);
             this.chooseImageBtn.Name = "chooseImageBtn";
             this.chooseImageBtn.Size = new System.Drawing.Size(130, 30);
             this.chooseImageBtn.TabIndex = 7;
@@ -113,7 +113,7 @@
             // 
             // chooseBackgroundBtn
             // 
-            this.chooseBackgroundBtn.Location = new System.Drawing.Point(109, 443);
+            this.chooseBackgroundBtn.Location = new System.Drawing.Point(111, 488);
             this.chooseBackgroundBtn.Name = "chooseBackgroundBtn";
             this.chooseBackgroundBtn.Size = new System.Drawing.Size(152, 30);
             this.chooseBackgroundBtn.TabIndex = 8;
@@ -131,8 +131,13 @@
             "Color Inversion",
             "Sepia",
             "Histogram",
-            "Subtract"});
-            this.choiceDrpbox.Location = new System.Drawing.Point(791, 90);
+            "Subtract",
+            "Smoothing",
+            "Gaussian Blur",
+            "Sharpen",
+            "Mean Removal",
+            "Emboss"});
+            this.choiceDrpbox.Location = new System.Drawing.Point(793, 96);
             this.choiceDrpbox.Name = "choiceDrpbox";
             this.choiceDrpbox.Size = new System.Drawing.Size(177, 24);
             this.choiceDrpbox.TabIndex = 9;
@@ -140,7 +145,7 @@
             // 
             // saveBtn
             // 
-            this.saveBtn.Location = new System.Drawing.Point(807, 492);
+            this.saveBtn.Location = new System.Drawing.Point(809, 537);
             this.saveBtn.Name = "saveBtn";
             this.saveBtn.Size = new System.Drawing.Size(141, 28);
             this.saveBtn.TabIndex = 10;
@@ -150,7 +155,7 @@
             // 
             // copyBtn
             // 
-            this.copyBtn.Location = new System.Drawing.Point(807, 443);
+            this.copyBtn.Location = new System.Drawing.Point(809, 488);
             this.copyBtn.Name = "copyBtn";
             this.copyBtn.Size = new System.Drawing.Size(141, 28);
             this.copyBtn.TabIndex = 11;
@@ -158,11 +163,22 @@
             this.copyBtn.UseVisualStyleBackColor = true;
             this.copyBtn.Click += new System.EventHandler(this.copyBtn_Click);
             // 
+            // subChoiceDrpbox
+            // 
+            this.subChoiceDrpbox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.subChoiceDrpbox.FormattingEnabled = true;
+            this.subChoiceDrpbox.Location = new System.Drawing.Point(793, 135);
+            this.subChoiceDrpbox.Name = "subChoiceDrpbox";
+            this.subChoiceDrpbox.Size = new System.Drawing.Size(177, 24);
+            this.subChoiceDrpbox.TabIndex = 12;
+            this.subChoiceDrpbox.Visible = false;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1059, 546);
+            this.ClientSize = new System.Drawing.Size(1059, 596);
+            this.Controls.Add(this.subChoiceDrpbox);
             this.Controls.Add(this.copyBtn);
             this.Controls.Add(this.saveBtn);
             this.Controls.Add(this.choiceDrpbox);
@@ -197,6 +213,7 @@
         private System.Windows.Forms.ComboBox choiceDrpbox;
         private System.Windows.Forms.Button saveBtn;
         private System.Windows.Forms.Button copyBtn;
+        private System.Windows.Forms.ComboBox subChoiceDrpbox;
     }
 }
 
