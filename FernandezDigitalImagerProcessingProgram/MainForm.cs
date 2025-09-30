@@ -67,7 +67,6 @@ namespace FernandezDigitalImagerProcessingProgram
                 }
             }
         }
-        // HELOOOOOOOOOOOOOOOOOO
         // Choose Image
         private void button1_Click(object sender, EventArgs e)
         {
@@ -341,12 +340,15 @@ namespace FernandezDigitalImagerProcessingProgram
                             mEmboss.Offset = 127;
                             break;
                         case "Lossy":
-                            mEmboss.TopLeft = mEmboss.TopRight = mEmboss.BottomLeft = mEmboss.BottomRight = 1;
-                            mEmboss.TopMid = mEmboss.MidLeft = mEmboss.MidRight = mEmboss.BottomMid = -2;
+                            mEmboss.TopLeft = mEmboss.TopRight = 1;
+                            mEmboss.TopMid = mEmboss.MidLeft = mEmboss.MidRight = mEmboss.BottomLeft = mEmboss.BottomRight = -2;
                             mEmboss.Pixel = 4;
+                            mEmboss.BottomMid = 1;
+
                             mEmboss.Factor = 1;
                             mEmboss.Offset = 127;
                             break;
+
                         case "Horizontal Only":
                             mEmboss.MidLeft = -1;
                             mEmboss.MidRight = -1;
