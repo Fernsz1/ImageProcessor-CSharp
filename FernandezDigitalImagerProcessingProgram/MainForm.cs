@@ -113,6 +113,7 @@ namespace FernandezDigitalImagerProcessingProgram
                                 currentWebcam = webcamDevices[0];
                                 currentWebcam.ShowWindow(pictureBox2);
                                 Application.DoEvents();
+                                System.Threading.Thread.Sleep(200);
                             }
                             currentWebcam.Sendmessage();
                             if (Clipboard.ContainsImage())

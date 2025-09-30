@@ -1,0 +1,23 @@
+# Build results
+bin/
+obj/
+*.exe
+*.dll
+
+# User-specific files
+*.user
+*.suo
+
+# VS Code and Visual Studio folders
+.vscode/
+.vs/
+
+# Temporary files
+*.log
+*.tmp
+
+# Backup files
+*.bak
+
+# Other
+Thumbs.db
